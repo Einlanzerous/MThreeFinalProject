@@ -3,13 +3,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Random;
-
-import javax.net.ServerSocketFactory;
-
 import OrderManager.Order;
 import OrderRouter.Router;
 import Ref.Instrument;
 import Ref.Ric;
+import javax.net.ServerSocketFactory;
 
 public class SampleRouter extends Thread implements Router{
 	private static final Random RANDOM_NUM_GENERATOR=new Random();
@@ -25,7 +23,7 @@ public class SampleRouter extends Thread implements Router{
 	public void run(){
 		//OM will connect to us
 		try {
-			omConn=ServerSocketFactory.getDefault().createServerSocket(port).accept();
+			omConn= ServerSocketFactory.getDefault().createServerSocket(port).accept();
 			while(true){
 				if(0<omConn.getInputStream().available()){
 					is=new ObjectInputStream(omConn.getInputStream());
