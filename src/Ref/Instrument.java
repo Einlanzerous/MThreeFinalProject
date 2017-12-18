@@ -14,7 +14,7 @@ public class Instrument implements Serializable{
 		this.ric=ric;
 	}
 	public String toString(){
-		return ric.ric;
+		return ric.getRic();
 	}
 
 	public long getId() {
