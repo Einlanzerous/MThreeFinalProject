@@ -119,7 +119,7 @@ public class OrderManager {
 		return null;
 	}
 	private void newOrder(int clientId, int clientOrderId, NewOrderSingle nos) throws IOException{
-		orders.put(id, new Order(clientId, clientOrderId, nos.instrument, nos.size));
+		orders.put(id, new Order(clientId, clientOrderId, nos.getInstrument(), nos.getSize()));
 		//send a message to the client with 39=A; //OrdStatus is Fix 39, 'A' is 'Pending New'
 		ObjectOutputStream os=new ObjectOutputStream(clients[clientId].getOutputStream());
 		//newOrderSingle acknowledgement

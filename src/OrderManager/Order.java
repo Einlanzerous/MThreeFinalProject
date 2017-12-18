@@ -6,12 +6,27 @@ import java.util.ArrayList;
 import Ref.Instrument;
 
 public class Order implements Serializable{
+	int clientid;
+	public Instrument instrument;
+	public double initialMarketPrice;
+	ArrayList<Order>slices;
+	ArrayList<Fill>fills;
+	char OrdStatus='A'; //OrdStatus is Fix 39, 'A' is 'Pending New'
+	//Status state;
 	public int id; //TODO these should all be longs
 	short orderRouter;
 	public int ClientOrderID; //TODO refactor to lowercase C
 	int size;
 	double[]bestPrices;
 	int bestPriceCount;
+	public Order(int clientId, int ClientOrderID, Instrument instrument, int size){
+		this.ClientOrderID=ClientOrderID;
+		this.size=size;
+		this.clientid=clientId;
+		this.instrument=instrument;
+		fills=new ArrayList<Fill>();
+		slices=new ArrayList<Order>();
+	}
 	public int sliceSizes(){
 		int totalSizeOfSlices=0;
 		for(Order c:slices)totalSizeOfSlices+=c.size;
@@ -34,13 +49,6 @@ public class Order implements Serializable{
 	public int sizeRemaining(){
 		return size-sizeFilled();
 	}
-	int clientid;
-	public Instrument instrument;
-	public double initialMarketPrice;
-	ArrayList<Order>slices;
-	ArrayList<Fill>fills;
-	char OrdStatus='A'; //OrdStatus is Fix 39, 'A' is 'Pending New'
-	//Status state;
 	float price(){
 		//TODO this is buggy as it doesn't take account of slices. Let them fix it
 		float sum=0;
@@ -83,7 +91,7 @@ public class Order implements Serializable{
 					matchingOrder.createFill(sze, initialMarketPrice);
 				}else{
 					slice.createFill(mParent,initialMarketPrice);
-					matchingOrder.createFill(mParent, initialMarketPrice);					
+					matchingOrder.createFill(mParent, initialMarketPrice);
 				}
 			}
 			//no point continuing if we didn't fill this slice, as we must already have fully filled the matchingOrder
@@ -111,21 +119,13 @@ public class Order implements Serializable{
 					matchingOrder.createFill(sze, initialMarketPrice);
 				}else{
 					createFill(mParent,initialMarketPrice);
-					matchingOrder.createFill(mParent, initialMarketPrice);					
+					matchingOrder.createFill(mParent, initialMarketPrice);
 				}
 			}
 		}
 	}
 	void cancel(){
 		//state=cancelled
-	}
-	public Order(int clientId, int ClientOrderID, Instrument instrument, int size){
-		this.ClientOrderID=ClientOrderID;
-		this.size=size;
-		this.clientid=clientId;
-		this.instrument=instrument;
-		fills=new ArrayList<Fill>();
-		slices=new ArrayList<Order>();
 	}
 }
 
