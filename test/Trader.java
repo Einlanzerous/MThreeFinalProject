@@ -11,11 +11,12 @@ import OrderManager.Order;
 import TradeScreen.TradeScreen;
 
 public class Trader extends Thread implements TradeScreen{
-	private HashMap<Integer,Order> orders=new HashMap<Integer,Order>();
 	private static Socket omConn;
+	private HashMap<Integer,Order> orders=new HashMap<Integer,Order>();
 	private int port;
 	private ObjectOutputStream os;
-	Trader(String name,int port){
+
+	Trader(String name, int port){
 		this.setName(name);
 		this.port=port;
 	}
@@ -23,27 +24,36 @@ public class Trader extends Thread implements TradeScreen{
 	public void run(){
 		//OM will connect to us
 		try {
-			omConn=ServerSocketFactory.getDefault().createServerSocket(port).accept();
+			omConn = ServerSocketFactory.getDefault().createServerSocket(port).accept();
 			
 			//is=new ObjectInputStream( omConn.getInputStream());
-			InputStream s=omConn.getInputStream(); //if i try to create an objectinputstream before we have data it will block
+			InputStream s = omConn.getInputStream(); //if i try to create an objectinputstream before we have data it will block
+
 			while(true){
-				if(0<s.available()){
+				if(0 < s.available()){
 					ObjectInputStream is = new ObjectInputStream(s);
-					api method=(api) is.readObject();
-					System.out.println(Thread.currentThread().getName()+" calling: "+method);
+					api method = (api) is.readObject();
+
+					System.out.println(Thread.currentThread().getName() + " calling: " + method);
+
 					switch(method){
-						case newOrder:newOrder(is.readInt(),(Order) is.readObject());break;
-						case price:price(is.readInt(),(Order) is.readObject());break;
+						case newOrder:
+							newOrder(is.readInt(),(Order) is.readObject());
+							break;
+						case price:
+							price(is.readInt(),(Order) is.readObject());
+							break;
 						case cross:
 							is.readInt();
-							is.readObject();break; //TODO
+							is.readObject();
+							break; //TODO
 						case fill:
 							is.readInt();
-							is.readObject();break; //TODO
+							is.readObject();
+							break; //TODO
 					}
-				}else{
-					//System.out.println("Trader Waiting for data to be available - sleep 1s");
+				} else{
+					System.out.println("Trader Waiting for data to be available - sleep 1s");
 					Thread.sleep(1000);
 				}
 			}
