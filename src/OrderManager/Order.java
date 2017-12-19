@@ -47,13 +47,13 @@ public class Order implements Serializable{
 			filledSoFar += f.size; // f.getSize();
 		}
 		for(Order c:slices){
-			filledSoFar += c.sizeFilled(); //returns 0 not matter what
+			filledSoFar += c.sizeFilled();
 		}
 
 		return filledSoFar;
 	}
 	public int sizeRemaining(){
-		return size-sizeFilled();
+		return size-sizeFilled(); // size of current order minus size of filled orders
 	}
 
 	float price(int accountNumberOfSlice){
@@ -62,7 +62,7 @@ public class Order implements Serializable{
 		for(Order slice: slices) {
 			if(slice.getClientOrderID() == accountNumberOfSlice) {
 				// sum all the fills of that slice
-				for(Fill fill:fills){
+				for(Fill fill : slice.fills){
 					sum+=fill.price; // change to fill.getPrice()
 				}
 			}
@@ -80,13 +80,13 @@ public class Order implements Serializable{
 		}
 	}
 	void cross(Order matchingOrder){
-		//pair slices first and then parent
-		for(Order slice:slices){
-			if(slice.sizeRemaining() == 0) continue;
+		// pair slices first and then parent
+		for(Order slice:slices){ // looping through every slice in current order
+			if(slice.sizeRemaining() == 0) continue; // no more orders
 			//TODO could optimise this to not start at the beginning every time
-			for(Order matchingSlice:matchingOrder.slices){
-				int msze=matchingSlice.sizeRemaining();
-				if(msze == 0)continue;
+			for(Order matchingSlice:matchingOrder.slices){ // take slice from argument slices and compare it to the slices in current slice
+				int msze=matchingSlice.sizeRemaining(); // matchingSlice number of orders remaining
+				if(msze == 0) continue;
 				int sze = slice.sizeRemaining();
 				if(sze <= msze){
 					 slice.createFill(sze,initialMarketPrice);
