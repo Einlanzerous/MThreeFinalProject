@@ -13,9 +13,9 @@ import Ref.Instrument;
 import Ref.Ric;
 
 public class SampleClient extends Mock implements Client{
-	private static final Random RANDOM_NUM_GENERATOR=new Random();
-	private static final Instrument[] INSTRUMENTS={new Instrument(new Ric("VOD.L")), new Instrument(new Ric("BP.L")), new Instrument(new Ric("BT.L"))};
-	private static final HashMap OUT_QUEUE=new HashMap(); //queue for outgoing orders
+	private static final Random RANDOM_NUM_GENERATOR = new Random();
+	private static final Instrument[] INSTRUMENTS = {new Instrument(new Ric("VOD.L")), new Instrument(new Ric("BP.L")), new Instrument(new Ric("BT.L"))};
+	private static final HashMap OUT_QUEUE = new HashMap(); //queue for outgoing orders
 	private int id = 0; //message id number
 	private Socket omConn; //connection to order manager
 			
@@ -23,11 +23,11 @@ public class SampleClient extends Mock implements Client{
 		//OM will connect to us
 		omConn = new ServerSocket(port).accept();
 
-		System.out.println("OM connected to client port "+port);
+		System.out.println("OM connected to client port " + port);
 	}
 	
 	@Override
-	public int sendOrder(Object par0)throws IOException{
+	public int sendOrder()throws IOException{
 		int size = RANDOM_NUM_GENERATOR.nextInt(5000);
 		int instid = RANDOM_NUM_GENERATOR.nextInt(3);
 		Instrument instrument = INSTRUMENTS[RANDOM_NUM_GENERATOR.nextInt(INSTRUMENTS.length)];
@@ -88,7 +88,6 @@ public class SampleClient extends Mock implements Client{
 					int OrderId =- 1;
 					char MsgType;
 					int OrdStatus;
-					//methods whatToDo = methods.dontKnow;
 					//String[][] fixTagsValues = new String[fixTags.length][2];
 					for (String fixTag : fixTags) {
 						String[] tag_value = fixTag.split("=");
@@ -107,9 +106,6 @@ public class SampleClient extends Mock implements Client{
 								break;
 						}
 					}
-//					switch(whatToDo){
-//						case newOrderSingleAcknowledgement:newOrderSingleAcknowledgement(OrderId);
-//					}
 					/*
 					message = connection.getMessage();
 					char type;

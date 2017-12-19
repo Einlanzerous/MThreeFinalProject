@@ -4,7 +4,7 @@ class MockClient extends Thread{
 	int port;
 
 	MockClient(String name,int port){
-		this.port=port;
+		this.port = port;
 		this.setName(name);
 	}
 
@@ -14,12 +14,12 @@ class MockClient extends Thread{
 
 			if(port == 2000){
 				//TODO why does this take an arg?
-				client.sendOrder(null);
-				int id = client.sendOrder(null);
+				//client.sendOrder(null);
+				int id = client.sendOrder();
 				client.sendCancel(id);
 				client.messageHandler();
 			} else{
-				client.sendOrder(null);
+				client.sendOrder();
 				client.messageHandler();
 			}
 		} catch (IOException e) {

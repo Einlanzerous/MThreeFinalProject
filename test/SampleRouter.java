@@ -14,7 +14,6 @@ public class SampleRouter extends Thread implements Router{
 	private static final Instrument[] INSTRUMENTS = {new Instrument(new Ric("VOD.L")), new Instrument(new Ric("BP.L")), new Instrument(new Ric("BT.L"))};
 	private Socket omConn;
 	private int port;
-	private ObjectInputStream is;
 	private ObjectOutputStream os;
 
 	public SampleRouter(String name, int port){
@@ -23,9 +22,10 @@ public class SampleRouter extends Thread implements Router{
 	}
 
 	public void run(){
+        ObjectInputStream is;
 		//OM will connect to us
 		try {
-			omConn= ServerSocketFactory.getDefault().createServerSocket(port).accept();
+			omConn = ServerSocketFactory.getDefault().createServerSocket(port).accept();
 			while(true){
 				if(0 < omConn.getInputStream().available()){
 					is=new ObjectInputStream(omConn.getInputStream());
