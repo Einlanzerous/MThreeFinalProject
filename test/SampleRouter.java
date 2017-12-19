@@ -48,7 +48,7 @@ public class SampleRouter extends Thread implements Router{
 			e.printStackTrace();
 		}
 	}
-	@Override
+
 	public void routeOrder(int id, int sliceId, int size, Instrument i) throws IOException, InterruptedException {
 		int fillSize = RANDOM_NUM_GENERATOR.nextInt(size);
 		//TODO have this similar to the market price of the instrument
@@ -63,10 +63,10 @@ public class SampleRouter extends Thread implements Router{
 		os.flush();
 	}
 
-	@Override
+
 	public void sendCancel(int id, int sliceId, int size, Instrument i){
 	}
-	@Override
+
 	public void priceAtSize(int id, int sliceId, Instrument i, int size) throws IOException{
 		os = new ObjectOutputStream(omConn.getOutputStream());
 		os.writeObject("bestPrice");

@@ -175,7 +175,7 @@ public class OrderManager {
 	}
 	private void internalCross(int id, Order o) throws IOException{
 		for(Map.Entry<Integer, Order > entry:orders.entrySet()){
-			if(entry.getKey().intValue() == id)continue;
+			if(entry.getKey() == id)continue;
 			Order matchingOrder = entry.getValue();
 			if(!(matchingOrder.instrument.equals(o.instrument) && matchingOrder.initialMarketPrice == o.initialMarketPrice))continue;
 			//TODO add support here and in Order for limit orders

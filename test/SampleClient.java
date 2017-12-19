@@ -59,16 +59,19 @@ public class SampleClient extends Thread implements Client {
 	}
 
 	@Override
-	public void partialFill(Order order){show(""+order);
+	public void partialFill(Order order){
+		show("Partial Fill " + order);
 	}
 
 	@Override
-	public void fullyFilled(Order order){show(""+order);
+	public void fullyFilled(Order order){
+		show("Order filled" + order);
 		OUT_QUEUE.remove(order.getClientOrderID());
 	}
 
 	@Override
-	public void cancelled(Order order){show(""+order);
+	public void cancelled(Order order){
+		show("Order cancelled" + order);
 		OUT_QUEUE.remove(order.getClientOrderID());
 	}
 
