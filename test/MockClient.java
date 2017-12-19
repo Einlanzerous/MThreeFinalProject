@@ -1,7 +1,7 @@
 import java.io.IOException;
 
 class MockClient extends Thread{
-	int port;
+	private int port;
 
 	MockClient(String name,int port){
 		this.port = port;
@@ -10,7 +10,7 @@ class MockClient extends Thread{
 
 	public void run(){
 		try {
-			SampleClient client = new SampleClient(port);
+			SampleClient client = new SampleClient(Thread.currentThread().getName(), port);
 
 			if(port == 2000){
 				//TODO why does this take an arg?
