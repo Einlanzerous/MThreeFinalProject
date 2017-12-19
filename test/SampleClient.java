@@ -31,7 +31,7 @@ public class SampleClient extends Mock implements Client{
 		int size = RANDOM_NUM_GENERATOR.nextInt(5000);
 		int instid = RANDOM_NUM_GENERATOR.nextInt(3);
 		Instrument instrument = INSTRUMENTS[RANDOM_NUM_GENERATOR.nextInt(INSTRUMENTS.length)];
-		NewOrderSingle nos = new NewOrderSingle(size,instid,instrument);
+		NewOrderSingle nos = new NewOrderSingle(size, instid, instrument);
 		
 		show("sendOrder: id=" + id + " size=" + size + " instrument=" + INSTRUMENTS[instid].toString());
 		OUT_QUEUE.put(id, nos);
@@ -39,7 +39,7 @@ public class SampleClient extends Mock implements Client{
 		if(omConn.isConnected()){
 			ObjectOutputStream os = new ObjectOutputStream(omConn.getOutputStream());
 			os.writeObject("newOrderSingle");
-			//os.writeObject("35=D;");
+			//os.writeObject("35=D;"); //Uncommenting this will ruin the code. lol.
 			os.writeInt(id);
 			os.writeObject(nos);
 			os.flush();
