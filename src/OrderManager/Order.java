@@ -6,21 +6,21 @@ import java.util.ArrayList;
 import Ref.Instrument;
 
 public class Order implements Serializable{
-	long clientId;
+	int clientId;
 	public Instrument instrument;
 	public double initialMarketPrice;
 	ArrayList<Order>slices;
 	ArrayList<Fill>fills;
-	char ordStatus='A'; //OrdStatus is Fix 39, 'A' is 'Pending New'
+	char OrdStatus='A'; //OrdStatus is Fix 39, 'A' is 'Pending New'
 	//Status state;
-	public long id; //TODO these should all be longs
+	public int id; //TODO these should all be longs
 	short orderRouter;
 	private int clientOrderID;
 	int size;
 	double[]bestPrices;
 	int bestPriceCount;
 
-	public Order(long clientId, int clientOrderID, Instrument instrument, int size){
+	public Order(int clientId, int clientOrderID, Instrument instrument, int size){
 		this.clientOrderID = clientOrderID;
 		this.size = size;
 		this.clientId = clientId;
@@ -74,9 +74,9 @@ public class Order implements Serializable{
 		fills.add(new Fill(size,price));
 
 		if(sizeRemaining() == 0){
-			ordStatus = '2';
+			OrdStatus = '2';
 		} else{
-			ordStatus = '1';
+			OrdStatus = '1';
 		}
 	}
 	void cross(Order matchingOrder){
