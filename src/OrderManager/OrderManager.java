@@ -16,16 +16,16 @@ import TradeScreen.TradeScreen;
 
 public class OrderManager {
 	private static LiveMarketData liveMarketData;
-	private HashMap<Integer,Order> orders=new HashMap<Integer,Order>(); //debugger will do this line as it gives state to the object
+	private HashMap<Integer, Order> orders=new HashMap<Integer,Order>(); //debugger will do this line as it gives state to the object
 	//currently recording the number of new order messages we get. TODO why? use it for more?
-	private int id=0; //debugger will do this line as it gives state to the object
+	private int id = 0; //debugger will do this line as it gives state to the object
 	private Socket[] orderRouters; //debugger will skip these lines as they dissapear at compile time into 'the object'/stack
 	private Socket[] clients;
 	private Socket trader;
 
 	//@param args the command line arguments
 	public OrderManager(InetSocketAddress[] orderRouters, InetSocketAddress[] clients,
-	InetSocketAddress trader,LiveMarketData liveMarketData)throws IOException,
+	InetSocketAddress trader,LiveMarketData liveMarketData) throws IOException,
 	ClassNotFoundException, InterruptedException{
 
 		this.liveMarketData = liveMarketData;
@@ -91,7 +91,7 @@ public class OrderManager {
 				}
 			}
 
-			if(0<this.trader.getInputStream().available()){
+			if(0 < this.trader.getInputStream().available()){
 				ObjectInputStream is = new ObjectInputStream(this.trader.getInputStream());
 				String method = (String)is.readObject();
 				System.out.println(Thread.currentThread().getName() + " calling " + method);
