@@ -72,7 +72,7 @@ public class Trader extends Thread implements TradeScreen{
 
 	@Override
 	public void acceptOrder(int id) throws IOException {
-		os=new ObjectOutputStream(omConn.getOutputStream());
+		os = new ObjectOutputStream(omConn.getOutputStream());
 		os.writeObject("acceptOrder");
 		os.writeInt(id);
 		os.flush();
@@ -80,7 +80,7 @@ public class Trader extends Thread implements TradeScreen{
 
 	@Override
 	public void sliceOrder(int id, int sliceSize) throws IOException {
-		os=new ObjectOutputStream(omConn.getOutputStream());
+		os = new ObjectOutputStream(omConn.getOutputStream());
 		os.writeObject("sliceOrder");
 		os.writeInt(id);
 		os.writeInt(sliceSize);
