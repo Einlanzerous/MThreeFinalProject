@@ -41,34 +41,7 @@ public class Instrument implements Serializable{
 		return bbid;
 	}
 }
-class EqInstrument extends Instrument{
-	private Date exDividend;
 
-	public EqInstrument(Ric ric){
-		super(ric);
-	}
-
-	public Date getExDividend() {
-		return exDividend;
-	}
-
-}
-class FutInstrument extends Instrument{
-	private Date expiry;
-	private Instrument underlier;
-
-	public FutInstrument(Ric ric){
-		super(ric);
-	}
-
-	public Date getExpiry() {
-		return expiry;
-	}
-
-	public Instrument getUnderlier() {
-		return underlier;
-	}
-}
 /*TODO
 Index
 bond
