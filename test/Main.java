@@ -17,7 +17,8 @@ public class Main{
 		//start sample routers
 		(new SampleRouter("Router LSE",2010)).start();
 		(new SampleRouter("Router BATE",2011)).start();
-	
+
+		//start sample traders
 		(new Trader("Trader James",2020)).start();
 		//start order manager
 		InetSocketAddress[] clients={new InetSocketAddress("localhost",2000),
