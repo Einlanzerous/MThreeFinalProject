@@ -15,7 +15,7 @@ public class Order implements Serializable{
 	//Status state;
 	public int id; //TODO these should all be longs
 	short orderRouter;
-	public int clientOrderID;
+	private int clientOrderID;
 	int size;
 	double[]bestPrices;
 	int bestPriceCount;
@@ -29,7 +29,7 @@ public class Order implements Serializable{
 		this.slices = new ArrayList<Order>();
 	}
 
-	public int sliceSizes(){
+	public int sliceSizes(){ // change c.size to c.getSize: make size private, add size getter
 		int totalSizeOfSlices=0;
 
 		for(Order c:slices)totalSizeOfSlices += c.size;
@@ -44,10 +44,10 @@ public class Order implements Serializable{
 		int filledSoFar=0;
 
 		for(Fill f:fills){
-			filledSoFar += f.size;
+			filledSoFar += f.size; // f.getSize();
 		}
 		for(Order c:slices){
-			filledSoFar += c.sizeFilled();
+			filledSoFar += c.sizeFilled(); //returns 0 not matter what
 		}
 
 		return filledSoFar;
@@ -55,12 +55,17 @@ public class Order implements Serializable{
 	public int sizeRemaining(){
 		return size-sizeFilled();
 	}
-	float price(){
-		//TODO this is buggy as it doesn't take account of slices. Let them fix it
-		float sum = 0;
 
-		for(Fill fill:fills){
-			sum+=fill.price;
+	float price(int accountNumberOfSlice){
+		float sum = 0;
+		// get the slice by its clientOrderId
+		for(Order slice: slices) {
+			if(slice.getClientOrderID() == accountNumberOfSlice) {
+				// sum all the fills of that slice
+				for(Fill fill:fills){
+					sum+=fill.price; // change to fill.getPrice()
+				}
+			}
 		}
 
 		return sum/fills.size();
@@ -135,6 +140,10 @@ public class Order implements Serializable{
 	}
 	void cancel(){
 		//state=cancelled
+	}
+
+	public int getClientOrderID() {
+		return clientOrderID;
 	}
 }
 
