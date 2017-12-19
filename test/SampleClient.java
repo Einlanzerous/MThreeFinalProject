@@ -70,49 +70,58 @@ public class SampleClient extends Mock implements Client{
 		OUT_QUEUE.remove(order.clientOrderID);
 	}
 
-	enum methods{newOrderSingleAcknowledgement, dontKnow};
+	//enum methods{newOrderSingleAcknowledgement, dontKnow};
 	@Override
 	public void messageHandler(){
-		
 		ObjectInputStream is;
+
 		try {
 			while(true){
 				//is.wait(); //this throws an exception!!
 				while(0 < omConn.getInputStream().available()){
 					is = new ObjectInputStream(omConn.getInputStream());
 					String fix = (String)is.readObject();
+
 					System.out.println(Thread.currentThread().getName() + " received fix message: " + fix);
+
 					String[] fixTags = fix.split(";");
 					int OrderId =- 1;
 					char MsgType;
 					int OrdStatus;
-					methods whatToDo = methods.dontKnow;
-					//String[][] fixTagsValues=new String[fixTags.length][2];
-					for(int i = 0; i < fixTags.length;i ++){
-						String[] tag_value = fixTags[i].split("=");
-						switch(tag_value[0]){
-							case"11":
+					//methods whatToDo = methods.dontKnow;
+					//String[][] fixTagsValues = new String[fixTags.length][2];
+					for (String fixTag : fixTags) {
+						String[] tag_value = fixTag.split("=");
+						switch (tag_value[0]) {
+							case "11":
 								OrderId = Integer.parseInt(tag_value[1]);
+								System.out.println("Case 11 apparently");
 								break;
-							case"35":
-								MsgType=tag_value[1].charAt(0);
-								if(MsgType == 'A') whatToDo=methods.newOrderSingleAcknowledgement;
+							case "35":
+								MsgType = tag_value[1].charAt(0);
+								if (MsgType == 'A') newOrderSingleAcknowledgement(OrderId);
 								break;
-							case"39":
+							case "39":
 								OrdStatus = tag_value[1].charAt(0);
+								System.out.println("Order status is apparently: " + OrdStatus);
 								break;
 						}
 					}
-					switch(whatToDo){
-						case newOrderSingleAcknowledgement:newOrderSingleAcknowledgement(OrderId);
-					}
-					
-					/*message=connection.getMessage();
+//					switch(whatToDo){
+//						case newOrderSingleAcknowledgement:newOrderSingleAcknowledgement(OrderId);
+//					}
+					/*
+					message = connection.getMessage();
 					char type;
 					switch(type){
-						case 'C':cancelled(message);break;
-						case 'P':partialFill(message);break;
-						case 'F':fullyFilled(message);
+						case 'C':
+							cancelled(message);
+							break;
+						case 'P':
+							partialFill(message);
+							break;
+						case 'F':
+							fullyFilled(message);
 					}*/
 					show("");
 				}
@@ -124,7 +133,7 @@ public class SampleClient extends Mock implements Client{
 	}
 
 	void newOrderSingleAcknowledgement(int OrderId){
-		System.out.println(Thread.currentThread().getName()+" called newOrderSingleAcknowledgement");
+		System.out.println(Thread.currentThread().getName() + " called newOrderSingleAcknowledgement for Order ID:" + OrderId);
 		//do nothing, as not recording so much state in the NOS class at present
 	}
 /*listen for connections
