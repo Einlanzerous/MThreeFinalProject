@@ -87,22 +87,22 @@ public class Order implements Serializable{
 			for(Order matchingSlice:matchingOrder.slices){ // take slice from argument slices and compare it to the slices in current slice
 				int msze=matchingSlice.sizeRemaining(); // matchingSlice number of orders remaining
 				if(msze == 0) continue;
-				int sze = slice.sizeRemaining();
-				if(sze <= msze){
-					 slice.createFill(sze,initialMarketPrice);
-					 matchingSlice.createFill(sze, initialMarketPrice);
+				int size = slice.sizeRemaining();
+				if(size <= msze){
+					 slice.createFill(size,initialMarketPrice);
+					 matchingSlice.createFill(size, initialMarketPrice);
 					 break;
 				}
-				//sze>msze
+				//size>msze
 				slice.createFill(msze,initialMarketPrice);
 				matchingSlice.createFill(msze, initialMarketPrice);
 			}
-			int sze=slice.sizeRemaining();
+			int size=slice.sizeRemaining();
 			int mParent=matchingOrder.sizeRemaining()-matchingOrder.sliceSizes();
-			if(sze > 0 && mParent > 0){
-				if(sze >= mParent){
-					slice.createFill(sze,initialMarketPrice);
-					matchingOrder.createFill(sze, initialMarketPrice);
+			if(size > 0 && mParent > 0){
+				if(size >= mParent){
+					slice.createFill(size,initialMarketPrice);
+					matchingOrder.createFill(size, initialMarketPrice);
 				}else{
 					slice.createFill(mParent,initialMarketPrice);
 					matchingOrder.createFill(mParent, initialMarketPrice);
@@ -110,32 +110,6 @@ public class Order implements Serializable{
 			}
 			//no point continuing if we didn't fill this slice, as we must already have fully filled the matchingOrder
 			if(slice.sizeRemaining() > 0)break;
-		}
-		if(sizeRemaining() > 0){
-			for(Order matchingSlice:matchingOrder.slices){
-				int msze = matchingSlice.sizeRemaining();
-				if(msze == 0)continue;
-				int sze = sizeRemaining();
-				if(sze <= msze){
-					 createFill(sze,initialMarketPrice);
-					 matchingSlice.createFill(sze, initialMarketPrice);
-					 break;
-				}
-				//sze>msze
-				createFill(msze,initialMarketPrice);
-				matchingSlice.createFill(msze, initialMarketPrice);
-			}
-			int sze=sizeRemaining();
-			int mParent = matchingOrder.sizeRemaining()-matchingOrder.sliceSizes();
-			if(sze > 0 && mParent > 0){
-				if(sze >= mParent){
-					createFill(sze,initialMarketPrice);
-					matchingOrder.createFill(sze, initialMarketPrice);
-				}else{
-					createFill(mParent,initialMarketPrice);
-					matchingOrder.createFill(mParent, initialMarketPrice);
-				}
-			}
 		}
 	}
 	void cancel(){
