@@ -20,6 +20,7 @@ public class Main{
 
 		//start sample traders
 		(new Trader("Trader James",2020)).start();
+
 		//start order manager
 		InetSocketAddress[] clients={new InetSocketAddress("localhost",2000),
 		                             new InetSocketAddress("localhost",2001)};
