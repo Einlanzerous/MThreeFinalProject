@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
@@ -12,7 +13,7 @@ import OrderManager.Order;
 import Ref.Instrument;
 import Ref.Ric;
 
-public class SampleClient extends Mock implements Client{
+public class SampleClient implements Client {
 	private static final Random RANDOM_NUM_GENERATOR = new Random();
 	private static final Instrument[] INSTRUMENTS = {new Instrument(new Ric("VOD.L")), new Instrument(new Ric("BP.L")), new Instrument(new Ric("BT.L"))};
 	private static final HashMap OUT_QUEUE = new HashMap(); //queue for outgoing orders
@@ -73,6 +74,7 @@ public class SampleClient extends Mock implements Client{
 	//enum methods{newOrderSingleAcknowledgement, dontKnow};
 	@Override
 	public void messageHandler(){
+		//run();
 		ObjectInputStream is;
 
 		try {
@@ -127,6 +129,68 @@ public class SampleClient extends Mock implements Client{
 			e.printStackTrace();
 		}
 	}
+
+	public static void show(String out) {
+		System.err.println(Thread.currentThread().getName() + ":" + out);
+	}
+
+	//Experimental, likely need to implement this runnable interface.
+//	public void run() {
+//		ObjectInputStream is;
+//
+//		try {
+//			InputStream s = omConn.getInputStream();
+//			s.wait(omConn.getInputStream().available()); //this throws an exception!!
+//			while(0 < omConn.getInputStream().available()){
+//				is = new ObjectInputStream(omConn.getInputStream());
+//				String fix = (String)is.readObject();
+//
+//				System.out.println(Thread.currentThread().getName() + " received fix message: " + fix);
+//
+//				String[] fixTags = fix.split(";");
+//				int OrderId =- 1;
+//				char MsgType;
+//				int OrdStatus;
+//				//String[][] fixTagsValues = new String[fixTags.length][2];
+//				for (String fixTag : fixTags) {
+//					String[] tag_value = fixTag.split("=");
+//					switch (tag_value[0]) {
+//						case "11":
+//							OrderId = Integer.parseInt(tag_value[1]);
+//							System.out.println("Case 11 apparently");
+//							break;
+//						case "35":
+//							MsgType = tag_value[1].charAt(0);
+//							if (MsgType == 'A') newOrderSingleAcknowledgement(OrderId);
+//							break;
+//						case "39":
+//							OrdStatus = tag_value[1].charAt(0);
+//							System.out.println("Order status is apparently: " + OrdStatus);
+//							break;
+//					}
+//				}
+//				/*
+//				message = connection.getMessage();
+//				char type;
+//				switch(type){
+//					case 'C':
+//						cancelled(message);
+//						break;
+//					case 'P':
+//						partialFill(message);
+//						break;
+//					case 'F':
+//						fullyFilled(message);
+//				}*/
+//				show("");
+//			}
+//		} catch (IOException | ClassNotFoundException e){
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	void newOrderSingleAcknowledgement(int OrderId){
 		System.out.println(Thread.currentThread().getName() + " called newOrderSingleAcknowledgement for Order ID:" + OrderId);
