@@ -1,5 +1,4 @@
 package OrderManager;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -7,7 +6,6 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
-
 import Database.Database;
 import LiveMarketData.LiveMarketData;
 import OrderClient.NewOrderSingle;
