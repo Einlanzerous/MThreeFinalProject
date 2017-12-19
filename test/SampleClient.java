@@ -50,7 +50,7 @@ public class SampleClient extends Thread implements Client {
 	}
 
 	@Override
-	public void sendCancel(int idToCancel){
+	public void sendCancel(int idToCancel) {
 		show("sendCancel: id=" + idToCancel);
 
 		if(omConn.isConnected()){
@@ -72,7 +72,6 @@ public class SampleClient extends Thread implements Client {
 		OUT_QUEUE.remove(order.getClientOrderID());
 	}
 
-	//enum methods{newOrderSingleAcknowledgement, dontKnow};
 	@Override
 	public void messageHandler(){
 		ObjectInputStream is;
@@ -123,7 +122,7 @@ public class SampleClient extends Thread implements Client {
 						case 'F':
 							fullyFilled(message);
 					}*/
-					show("");
+					//show("");
 				}
 			}
 		} catch (IOException | ClassNotFoundException e){
