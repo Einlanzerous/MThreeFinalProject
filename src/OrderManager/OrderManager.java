@@ -117,6 +117,12 @@ public class OrderManager {
 					case "sliceOrder":
 						sliceOrder(is.readInt(), is.readInt());
 						break;
+					case "newFill":
+						is.readInt();
+						is.readInt();
+						is.readInt();
+						is.readDouble();
+						break;
 				}
 			}
 		}
