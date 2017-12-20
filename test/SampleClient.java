@@ -53,7 +53,7 @@ public class SampleClient extends Thread implements Client {
 
 		if(omConn.isConnected()){
 			ObjectOutputStream os = new ObjectOutputStream((omConn.getOutputStream()));
-
+			os.writeInt(idToCancel);
 		}
 	}
 
