@@ -122,8 +122,7 @@ public class SampleClient extends Thread implements Client {
 					//show("");
 				}
 			}
-		} catch (IOException | ClassNotFoundException e){
-			// TODO Auto-generated catch block
+		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
