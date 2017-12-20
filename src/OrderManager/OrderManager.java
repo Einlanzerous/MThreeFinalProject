@@ -151,11 +151,11 @@ public class OrderManager {
 		id++;
 	}
 
-	private void sendOrderToTrader(int id, Order o, Object method) throws IOException{
+	private void sendOrderToTrader(int id, Order order, Object method) throws IOException{
 		ObjectOutputStream traderStream = new ObjectOutputStream(trader.getOutputStream());
 		traderStream.writeObject(method);
 		traderStream.writeInt(id);
-		traderStream.writeObject(o);
+		traderStream.writeObject(order);
 		traderStream.flush();
 	}
 
@@ -238,6 +238,7 @@ public class OrderManager {
 		}
 
 		order.slices.get(sliceId).createFill(size, price);
+
 		if(order.sizeRemaining() == 0){
 			Database.write(order);
 		}

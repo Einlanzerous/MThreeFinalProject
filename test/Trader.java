@@ -44,9 +44,7 @@ public class Trader extends Thread implements TradeScreen{
 							is.readObject();
 							break; //TODO
 						case fill:
-							System.out.println("**>>Trying to fill order size " + orders.get(is.readInt()).sizeRemaining());
-							//is.readInt();
-							is.readObject();
+							fill(is.readInt(), (Order) is.readObject());
 							break; //TODO
 					}
 				} else{
@@ -84,11 +82,20 @@ public class Trader extends Thread implements TradeScreen{
 		os.flush();
 	}
 
-	public void price(int id, Order o) throws InterruptedException, IOException {
+	public void price(int id, Order order) throws InterruptedException, IOException {
 		//TODO should update the trade screen
 		Thread.sleep(2134);
 		sliceOrder(id,orders.get(id).sizeRemaining()/2);
 	}
 
-
+	public void fill(int id, Order order) throws IOException {
+		System.out.println(Thread.currentThread().getName() + " is filling " + order.sizeRemaining());
+		os = new ObjectOutputStream(omConn.getOutputStream());
+		os.writeObject("newFill");
+		os.writeInt(id);
+		os.writeInt(0);
+		os.writeInt(order.sizeRemaining());
+		os.writeDouble(order.initialMarketPrice);
+		os.flush();
+	}
 }
