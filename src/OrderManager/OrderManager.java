@@ -245,12 +245,12 @@ public class OrderManager {
 
 		if(order.sizeRemaining() == 0){
 			Database.write(order);
-			System.out.println("Order complete: " + id);
+			System.out.println("\033[31;1mOrder completed: " + id+"\033[0m");
 			System.out.println("ORDER SUMMARY: ");
 			for(Order slices : order.slices){
 				System.out.println("Number of fills: " + slices.fills.size());
 				for(Fill slots : slices.fills){
-					System.out.println(slots.size + " size order at " + slots.price + " price");
+					System.out.format("Order of size "+ slots.size + " at $%.2f\n",slots.price);
 				}
 			}
 		} else {
