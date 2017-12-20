@@ -33,7 +33,7 @@ public class SampleClient extends Thread implements Client {
 		int instid = RANDOM_NUM_GENERATOR.nextInt(3);
 		Instrument instrument = INSTRUMENTS[RANDOM_NUM_GENERATOR.nextInt(INSTRUMENTS.length)];
 		NewOrderSingle nos = new NewOrderSingle(size, instid, instrument);
-		//id = id + RANDOM_NUM_GENERATOR.nextInt(10000) + 2;
+		id = id + RANDOM_NUM_GENERATOR.nextInt(10000);
 		show("sendOrder: client id=" + id + " size=" + size + " instrument=" + INSTRUMENTS[instid].toString());
 		OUT_QUEUE.put(id, nos);
 

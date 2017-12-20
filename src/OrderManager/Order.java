@@ -53,14 +53,14 @@ public class Order implements Serializable{
 		return filledSoFar;
 	}
 	public int sizeRemaining(){
-		return size-sizeFilled(); // size of current order minus size of filled orders
+		return size-sizeFilled();
 	}
 
 	float price(int accountNumberOfSlice){
 		float sum = 0;
-		// get the slice by its clientOrderId
+		// get the slice by its id
 		for(Order slice: slices) {
-			if(slice.getClientOrderID() == accountNumberOfSlice) {
+			if(slice.id == accountNumberOfSlice) {
 				// sum all the fills of that slice
 				for(Fill fill : slice.fills){
 					sum+=fill.price; // change to fill.getPrice()
@@ -119,5 +119,7 @@ public class Order implements Serializable{
 	public int getClientOrderID() {
 		return clientOrderID;
 	}
+
+
 }
 

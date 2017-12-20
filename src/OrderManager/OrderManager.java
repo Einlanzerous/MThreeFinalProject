@@ -69,7 +69,7 @@ public class OrderManager {
 					switch(method){ //determine the type of message and process it
 						//call the newOrder message with the clientId and the message (clientMessageId,NewOrderSingle)
 						case "newOrderSingle":
-							newOrder(clientId, is.readInt(), (NewOrderSingle)is.readObject());
+							newOrder(clientId, is.readInt()-1, (NewOrderSingle)is.readObject());
 							break;
 						case "cancel":
 							cancelOrder(is.readInt());
