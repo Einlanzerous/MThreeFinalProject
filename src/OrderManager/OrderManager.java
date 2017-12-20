@@ -61,6 +61,7 @@ public class OrderManager {
 			for(clientId = 0; clientId < this.clients.length; clientId++){ //check if we have data on any of the sockets
 				client = this.clients[clientId];
 
+
 				if(0 < client.getInputStream().available()){ //if we have part of a message ready to read, assuming this doesn't fragment messages
 					ObjectInputStream is = new ObjectInputStream(client.getInputStream()); //create an object inputstream, this is a pretty stupid way of doing it, why not create it once rather than every time around the loop
 					String method = (String)is.readObject();
