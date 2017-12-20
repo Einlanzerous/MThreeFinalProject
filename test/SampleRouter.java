@@ -16,6 +16,7 @@ public class SampleRouter extends Thread implements Router{
 	private int port;
 	private ObjectOutputStream os;
 
+
 	public SampleRouter(String name, int port){
 		this.setName(name);
 		this.port = port;
@@ -53,6 +54,7 @@ public class SampleRouter extends Thread implements Router{
 	public void routeOrder(int id, int sliceId, int size, Instrument i) throws IOException, InterruptedException {
 		int fillSize = RANDOM_NUM_GENERATOR.nextInt(size);
 		double fillPrice = 199 * RANDOM_NUM_GENERATOR.nextDouble();
+		System.out.println("The price of routOrder in SampleRouter: " + fillPrice);
 		Thread.sleep(42);
 		os = new ObjectOutputStream(omConn.getOutputStream());
 		os.writeObject("newFill");
@@ -63,8 +65,8 @@ public class SampleRouter extends Thread implements Router{
 		os.flush();
 	}
 
-
 	public void sendCancel(int id, int sliceId, int size, Instrument i){
+
 	}
 
 	public void priceAtSize(int id, int sliceId, Instrument i, int size) throws IOException{
@@ -72,7 +74,9 @@ public class SampleRouter extends Thread implements Router{
 		os.writeObject("bestPrice");
 		os.writeInt(id);
 		os.writeInt(sliceId);
-		os.writeDouble(199 * RANDOM_NUM_GENERATOR.nextDouble());
+		double priceSize = 199 * RANDOM_NUM_GENERATOR.nextDouble();
+		os.writeDouble(priceSize);
+		System.out.println("*************SampleRouter priceAtSize calling: " + priceSize);
 		os.flush();
 	}
 }
