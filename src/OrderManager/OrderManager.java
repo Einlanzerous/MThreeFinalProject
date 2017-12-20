@@ -203,7 +203,17 @@ public class OrderManager {
 	}
 
 	private void cancelOrder(int id){
+		Order cancelOrder = orders.get(id);
 		orders.remove(id);
+
+		try {
+			ObjectOutputStream newOrderStream = new ObjectOutputStream(clients[cancelOrder.clientId].getOutputStream());
+			newOrderStream.writeObject("11=" + cancelOrder.clientId + ";35=A;39=4;");
+			newOrderStream.flush();
+			System.err.println("Client:" + cancelOrder.clientId + " order " + id + " successfully cancelled.");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void newFill(int id, int sliceId, int size, double price) throws IOException{
