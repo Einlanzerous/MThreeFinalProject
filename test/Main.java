@@ -25,8 +25,10 @@ public class Main{
 				                     new InetSocketAddress("localhost",2001)};
 		InetSocketAddress[] routers={new InetSocketAddress("localhost",2010),
 		                             new InetSocketAddress("localhost",2011)};
+
 		InetSocketAddress trader = new InetSocketAddress("localhost",2020);
 		LiveMarketData liveMarketData = new SampleLiveMarketData();
+
 		(new MockOM("Order Manager",routers,clients,trader,liveMarketData)).start();
 	}
 }
