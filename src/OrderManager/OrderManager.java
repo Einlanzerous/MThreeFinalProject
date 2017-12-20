@@ -116,6 +116,7 @@ public class OrderManager {
 						break;
 					case "sliceOrder":
 						sliceOrder(is.readInt(), is.readInt());
+						break;
 				}
 			}
 		}
@@ -163,7 +164,7 @@ public class OrderManager {
 		Order order = orders.get(id);
 
 		if(order.OrdStatus == '4'){
-			System.err.println("Order cancelled - declining.");
+			System.out.println("\033[31;1mOrder: "+id+" cancelled - declining.\033[0m");
 			return;
 		}
 		else if(order.OrdStatus != 'A'){ //Pending New
@@ -223,7 +224,7 @@ public class OrderManager {
 			ObjectOutputStream newOrderStream = new ObjectOutputStream(clients[cancelOrder.clientId].getOutputStream());
 			newOrderStream.writeObject("11=" + cancelOrder.clientId + ";39=4");
 			newOrderStream.flush();
-			System.err.println(Thread.currentThread().getName()+ " successfully cancelled order: " +id);
+			System.out.println("\033[31;1m"+Thread.currentThread().getName()+ " successfully cancelled order: " +id+"\033[0m");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
