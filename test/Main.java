@@ -6,12 +6,11 @@ import LiveMarketData.LiveMarketData;
 import OrderManager.OrderManager;
 
 public class Main{
-	public static void main(String[] args) throws IOException{
+	public static void main(String[] args) {
 		System.out.println("TEST: this program tests ordermanager");
 
 		//start sample clients
-		MockClient c1 = new MockClient("Client 1",2000);
-		c1.start();
+		(new MockClient("Client 1",2000)).start();
 		(new MockClient("Client 2",2001)).start();
 		
 		//start sample routers
