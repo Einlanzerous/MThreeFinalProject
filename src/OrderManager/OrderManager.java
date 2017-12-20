@@ -200,13 +200,16 @@ public class OrderManager {
 
 	private void internalCross(int id, Order order) throws IOException{
 		for(Map.Entry<Integer, Order> entry:orders.entrySet()){
-			if(entry.getKey() == id)continue;
+			if (entry.getKey() == id) continue;
 			Order matchingOrder = entry.getValue();
-			if(!(matchingOrder.instrument.equals(order.instrument) && matchingOrder.initialMarketPrice == order.initialMarketPrice))continue;
+
+			if (!(matchingOrder.instrument.equals(order.instrument) && matchingOrder.initialMarketPrice == order.initialMarketPrice))
+				continue;
 			//TODO add support here and in Order for limit orders
 			int sizeBefore = order.sizeRemaining();
 			order.cross(matchingOrder);
-			if(sizeBefore != order.sizeRemaining()){
+
+			if (sizeBefore != order.sizeRemaining()) {
 				sendOrderToTrader(id, order, TradeScreen.api.cross);
 			}
 		}
@@ -260,12 +263,14 @@ public class OrderManager {
 		//TODO this assumes we are buying rather than selling
 		int minIndex = 0;
 		double min=order.bestPrices[0];
+
 		for(int i = 1;i < order.bestPrices.length;i++){
 			if(min > order.bestPrices[i]){
 				minIndex = i;
 				min=order.bestPrices[i];
 			}
 		}
+
 		ObjectOutputStream os = new ObjectOutputStream(orderRouters[minIndex].getOutputStream());
 		os.writeObject(Router.api.routeOrder);
 		os.writeInt(order.id);

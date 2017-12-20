@@ -12,7 +12,7 @@ import TradeScreen.TradeScreen;
 
 public class Trader extends Thread implements TradeScreen{
 	private static Socket omConn;
-	private HashMap<Integer,Order> orders=new HashMap<Integer,Order>();
+	private HashMap<Integer,Order> orders = new HashMap<Integer,Order>();
 	private int port;
 	private ObjectOutputStream os;
 
@@ -44,7 +44,8 @@ public class Trader extends Thread implements TradeScreen{
 							is.readObject();
 							break; //TODO
 						case fill:
-							is.readInt();
+							System.out.println("**>>Trying to fill order size " + orders.get(is.readInt()).sizeRemaining());
+							//is.readInt();
 							is.readObject();
 							break; //TODO
 					}
@@ -88,4 +89,6 @@ public class Trader extends Thread implements TradeScreen{
 		Thread.sleep(2134);
 		sliceOrder(id,orders.get(id).sizeRemaining()/2);
 	}
+
+
 }

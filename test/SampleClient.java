@@ -57,6 +57,8 @@ public class SampleClient extends Thread implements Client {
 			os.writeInt(idToCancel);
 			os.flush();
 		}
+
+
 	}
 
 	public void partialFill(Order order){
