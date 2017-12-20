@@ -34,7 +34,7 @@ public class SampleClient extends Thread implements Client {
 		Instrument instrument = INSTRUMENTS[RANDOM_NUM_GENERATOR.nextInt(INSTRUMENTS.length)];
 		NewOrderSingle nos = new NewOrderSingle(size, instid, instrument);
 		
-		show("sendOrde r: id=" + id + " size=" + size + " instrument=" + INSTRUMENTS[instid].toString());
+		show("sendOrder: id=" + id + " size=" + size + " instrument=" + INSTRUMENTS[instid].toString());
 		OUT_QUEUE.put(id, nos);
 
 		if(omConn.isConnected()){

@@ -69,6 +69,9 @@ public class OrderManager {
 						case "newOrderSingle":
 							newOrder(clientId, is.readInt(), (NewOrderSingle)is.readObject());
 							break;
+						case "cancel":
+							cancelOrder(is.readInt());
+							break;
 						default:
 							System.err.println("Error- unknown message type");
 					}
