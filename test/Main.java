@@ -21,8 +21,7 @@ public class Main{
 		(new Trader("Trader James",2020)).start();
 
 		//start order manager
-		InetSocketAddress[] clients={new InetSocketAddress("localhost",2000),
-				                     new InetSocketAddress("localhost",2001)};
+		InetSocketAddress[] clients={new InetSocketAddress("localhost",2000),new InetSocketAddress("localhost",2001)};
 		InetSocketAddress[] routers={new InetSocketAddress("localhost",2010),
 		                             new InetSocketAddress("localhost",2011)};
 

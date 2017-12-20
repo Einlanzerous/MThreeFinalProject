@@ -31,10 +31,10 @@ public class SampleClient extends Thread implements Client {
 	public int sendOrder()throws IOException{
 		int size = RANDOM_NUM_GENERATOR.nextInt(5000);
 		int instid = RANDOM_NUM_GENERATOR.nextInt(3);
-		Instrument instrument = INSTRUMENTS[RANDOM_NUM_GENERATOR.nextInt(INSTRUMENTS.length)];
+		Instrument instrument = INSTRUMENTS[instid];
 		NewOrderSingle nos = new NewOrderSingle(size, instid, instrument);
-		id = id + RANDOM_NUM_GENERATOR.nextInt(10000);
-		show("sendOrder: client id=" + id + " size=" + size + " instrument=" + INSTRUMENTS[instid].toString());
+		//id = id + RANDOM_NUM_GENERATOR.nextInt(10000) + 2;
+		show("sendOrder: client id=" + id + " size=" + size + " instrument=" + instrument.toString());
 		OUT_QUEUE.put(id, nos);
 
 		if(omConn.isConnected()){
