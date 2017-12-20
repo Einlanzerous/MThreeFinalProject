@@ -10,4 +10,5 @@ class Fill implements Serializable {
 		this.size=size;
 		this.price=price;
 	}
+
 }
