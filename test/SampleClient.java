@@ -100,7 +100,7 @@ public class SampleClient extends Thread implements Client {
 						switch (tag_value[0]) {
 							case "11":
 								OrderId = Integer.parseInt(tag_value[1]);
-								System.out.println("Case 11 apparently");
+								System.out.println("Case 11 apparently: " + OrderId);
 								break;
 							case "35":
 								MsgType = tag_value[1].charAt(0);

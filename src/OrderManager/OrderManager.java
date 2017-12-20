@@ -24,7 +24,7 @@ public class OrderManager {
 	//@param args the command line arguments
 	public OrderManager(InetSocketAddress[] orderRouters, InetSocketAddress[] clients,
 	InetSocketAddress trader,LiveMarketData liveMarketData) throws IOException,
-	ClassNotFoundException, InterruptedException{
+	ClassNotFoundException, InterruptedException {
 
 		this.liveMarketData = liveMarketData;
 		this.trader = connect(trader);
@@ -34,7 +34,7 @@ public class OrderManager {
 		this.orderRouters = new Socket[orderRouters.length];
 		int i = 0; //need a counter for the the output array
 
-		for(InetSocketAddress location:orderRouters){
+		for (InetSocketAddress location : orderRouters) {
 			this.orderRouters[i] = connect(location);
 			i++;
 		}
@@ -43,13 +43,17 @@ public class OrderManager {
 		this.clients = new Socket[clients.length];
 		i = 0;
 
-		for(InetSocketAddress location:clients){
+		for (InetSocketAddress location : clients) {
 			this.clients[i] = connect(location);
 			i++;
 		}
+		processDay();
+	}
 
+	private void processDay() throws IOException, ClassNotFoundException {
 		int clientId, routerId;
 		Socket client, router;
+
 		//main loop, wait for a message, then process it
 		while(true){
 			//TODO this is pretty cpu intensive, use a more modern polling/interrupt/select approach
