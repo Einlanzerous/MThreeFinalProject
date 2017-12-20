@@ -133,7 +133,7 @@ public class SampleClient extends Thread implements Client {
 	}
 
 	public static void show(String out) {
-		System.err.println(Thread.currentThread().getName() + ":" + out);
+		System.out.println("\033[31;1m"+Thread.currentThread().getName() + ": " + out+"\033[0m");
 	}
 
 	void newOrderSingleAcknowledgement(int OrderId){
