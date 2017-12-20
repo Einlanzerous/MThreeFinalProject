@@ -60,10 +60,12 @@ public class OrderManager {
 			//we want to use the arrayindex as the clientId, so use traditional for loop instead of foreach
 			for(clientId = 0; clientId < this.clients.length; clientId++){ //check if we have data on any of the sockets
 				client = this.clients[clientId];
+
 				if(0 < client.getInputStream().available()){ //if we have part of a message ready to read, assuming this doesn't fragment messages
 					ObjectInputStream is = new ObjectInputStream(client.getInputStream()); //create an object inputstream, this is a pretty stupid way of doing it, why not create it once rather than every time around the loop
 					String method = (String)is.readObject();
 					System.out.println(Thread.currentThread().getName() + " calling " + method);
+
 					switch(method){ //determine the type of message and process it
 						//call the newOrder message with the clientId and the message (clientMessageId,NewOrderSingle)
 						case "newOrderSingle":
@@ -80,10 +82,12 @@ public class OrderManager {
 
 			for(routerId = 0; routerId < this.orderRouters.length; routerId++){ //check if we have data on any of the sockets
 				router = this.orderRouters[routerId];
+
 				if(0 < router.getInputStream().available()){ //if we have part of a message ready to read, assuming this doesn't fragment messages
 					ObjectInputStream is = new ObjectInputStream(router.getInputStream()); //create an object inputstream, this is a pretty stupid way of doing it, why not create it once rather than every time around the loop
 					String method = (String)is.readObject();
 					System.out.println(Thread.currentThread().getName() + " calling " + method);
+
 					switch(method){ //determine the type of message and process it
 						case "bestPrice":
 							int OrderId = is.readInt();
@@ -157,10 +161,16 @@ public class OrderManager {
 
 	public void acceptOrder(int id) throws IOException{
 		Order order = orders.get(id);
-		if(order.OrdStatus != 'A'){ //Pending New
+
+		if(order.OrdStatus == '4'){
+			System.err.println("Order cancelled- declining");
+			return;
+		}
+		else if(order.OrdStatus != 'A'){ //Pending New
 			System.out.println("error accepting order that has already been accepted");
 			return;
 		}
+
 		order.OrdStatus = '0'; //New
 		ObjectOutputStream os = new ObjectOutputStream(clients[order.clientId].getOutputStream());
 		//newOrderSingle acknowledgement
@@ -204,7 +214,7 @@ public class OrderManager {
 
 	private void cancelOrder(int id){
 		Order cancelOrder = orders.get(id);
-		orders.remove(id);
+		cancelOrder.OrdStatus = '4'; //cancel marker
 
 		try {
 			ObjectOutputStream newOrderStream = new ObjectOutputStream(clients[cancelOrder.clientId].getOutputStream());
@@ -218,6 +228,12 @@ public class OrderManager {
 
 	private void newFill(int id, int sliceId, int size, double price) throws IOException{
 		Order order = orders.get(id);
+
+		if(order.OrdStatus == '4'){
+			System.err.println("Refusing fill; order was cancelled");
+			return;
+		}
+
 		order.slices.get(sliceId).createFill(size, price);
 		if(order.sizeRemaining() == 0){
 			Database.write(order);
