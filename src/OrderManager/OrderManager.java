@@ -245,8 +245,17 @@ public class OrderManager {
 
 		if(order.sizeRemaining() == 0){
 			Database.write(order);
+			System.out.println("Order complete: " + id);
+			System.out.println("ORDER SUMMARY: ");
+			for(Order slices : order.slices){
+				System.out.println("Number of fills: " + slices.fills.size());
+				for(Fill slots : slices.fills){
+					System.out.println(slots.size + " size order at " + slots.price + " price");
+				}
+			}
+		} else {
+			sendOrderToTrader(id, order, TradeScreen.api.fill);
 		}
-		sendOrderToTrader(id, order, TradeScreen.api.fill);
 	}
 
 	private void routeOrder(int id, int sliceId, int size, Order order) throws IOException{
