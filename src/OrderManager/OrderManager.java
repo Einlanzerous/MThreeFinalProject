@@ -62,7 +62,7 @@ public class OrderManager {
 				client = this.clients[clientId];
 				if(0 < client.getInputStream().available()){ //if we have part of a message ready to read, assuming this doesn't fragment messages
 					ObjectInputStream is = new ObjectInputStream(client.getInputStream()); //create an object inputstream, this is a pretty stupid way of doing it, why not create it once rather than every time around the loop
-					String method=(String)is.readObject();
+					String method = (String)is.readObject();
 					System.out.println(Thread.currentThread().getName() + " calling " + method);
 					switch(method){ //determine the type of message and process it
 						//call the newOrder message with the clientId and the message (clientMessageId,NewOrderSingle)
@@ -129,6 +129,7 @@ public class OrderManager {
 		System.out.println("Failed to connect to " + location.toString());
 		return null;
 	}
+
 	private void newOrder(int clientId, int clientOrderId, NewOrderSingle nos) throws IOException{
 		orders.put(id, new Order(clientId, clientOrderId, nos.getInstrument(), nos.getSize()));
 		//send a message to the client with 39=A; //OrdStatus is Fix 39, 'A' is 'Pending New'
@@ -142,6 +143,7 @@ public class OrderManager {
 		//don't do anything else with the order, as we are simulating high touch orders and so need to wait for the trader to accept the order
 		id++;
 	}
+
 	private void sendOrderToTrader(int id, Order o, Object method) throws IOException{
 		ObjectOutputStream traderStream = new ObjectOutputStream(trader.getOutputStream());
 		traderStream.writeObject(method);
@@ -149,6 +151,7 @@ public class OrderManager {
 		traderStream.writeObject(o);
 		traderStream.flush();
 	}
+
 	public void acceptOrder(int id) throws IOException{
 		Order order = orders.get(id);
 		if(order.OrdStatus != 'A'){ //Pending New
@@ -164,7 +167,8 @@ public class OrderManager {
 
 		price(id, order);
 	}
-	public void sliceOrder(int id,int sliceSize) throws IOException{
+
+	public void sliceOrder(int id, int sliceSize) throws IOException{
 		Order order = orders.get(id);
 		//slice the order. We have to check this is a valid size.
 		//Order has a list of slices, and a list of fills, each slice is a childorder and each fill is associated with either a child order or the original order
@@ -180,6 +184,7 @@ public class OrderManager {
 			routeOrder(id, sliceId, sizeRemaining, slice);
 		}
 	}
+
 	private void internalCross(int id, Order order) throws IOException{
 		for(Map.Entry<Integer, Order> entry:orders.entrySet()){
 			if(entry.getKey() == id)continue;
@@ -194,8 +199,8 @@ public class OrderManager {
 		}
 	}
 
-	private void cancelOrder(){
-		
+	private void cancelOrder(int id){
+		orders.remove(id);
 	}
 
 	private void newFill(int id, int sliceId, int size, double price) throws IOException{
@@ -243,6 +248,7 @@ public class OrderManager {
 	private void sendCancel(Order order, Router orderRouter){
 		//orderRouter.sendCancel(order);
 		//order.orderRouter.writeObject(order);
+
 	}
 	private void price(int id, Order order) throws IOException{
 		liveMarketData.setPrice(order);

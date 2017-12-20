@@ -48,11 +48,12 @@ public class SampleClient extends Thread implements Client {
 		return id++;
 	}
 
-	public void sendCancel(int idToCancel) {
+	public void sendCancel(int idToCancel) throws IOException {
 		show("sendCancel: id=" + idToCancel);
 
 		if(omConn.isConnected()){
-			//OMconnection.sendMessage("cancel",idToCancel);
+			ObjectOutputStream os = new ObjectOutputStream((omConn.getOutputStream()));
+
 		}
 	}
 
