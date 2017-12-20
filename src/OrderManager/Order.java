@@ -37,11 +37,11 @@ public class Order implements Serializable{
 		return totalSizeOfSlices;
 	}
 	public int newSlice(int sliceSize){
-		slices.add(new Order(id, clientOrderID,instrument,sliceSize));
+		slices.add(new Order(id, clientOrderID, instrument, sliceSize));
 		return slices.size()-1;
 	}
 	public int sizeFilled(){
-		int filledSoFar=0;
+		int filledSoFar = 0;
 
 		for(Fill f:fills){
 			filledSoFar += f.size; // f.getSize();
