@@ -221,7 +221,7 @@ public class OrderManager {
 
 		try {
 			ObjectOutputStream newOrderStream = new ObjectOutputStream(clients[cancelOrder.clientId].getOutputStream());
-			newOrderStream.writeObject("11=" + cancelOrder.clientId + ";35=A;39=4;");
+			newOrderStream.writeObject("11=" + cancelOrder.clientId + ";39=4");
 			newOrderStream.flush();
 			System.err.println("Client:" + cancelOrder.clientId + " order " + id + " successfully cancelled.");
 		} catch (IOException e) {
