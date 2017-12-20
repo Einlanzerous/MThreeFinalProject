@@ -20,7 +20,6 @@ class MockOM extends Thread{
 		this.setName(name);
 	}
 
-	@Override
 	public void run(){
 		try{
 			//In order to debug constructors you can do F5 F7 F5

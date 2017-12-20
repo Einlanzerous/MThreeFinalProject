@@ -27,15 +27,14 @@ public class SampleClient extends Thread implements Client {
 
 		System.out.println("OM connected to client port " + port);
 	}
-	
-	@Override
+
 	public int sendOrder()throws IOException{
 		int size = RANDOM_NUM_GENERATOR.nextInt(5000);
 		int instid = RANDOM_NUM_GENERATOR.nextInt(3);
 		Instrument instrument = INSTRUMENTS[RANDOM_NUM_GENERATOR.nextInt(INSTRUMENTS.length)];
 		NewOrderSingle nos = new NewOrderSingle(size, instid, instrument);
 		
-		show("sendOrder: id=" + id + " size=" + size + " instrument=" + INSTRUMENTS[instid].toString());
+		show("sendOrde r: id=" + id + " size=" + size + " instrument=" + INSTRUMENTS[instid].toString());
 		OUT_QUEUE.put(id, nos);
 
 		if(omConn.isConnected()){
@@ -49,7 +48,6 @@ public class SampleClient extends Thread implements Client {
 		return id++;
 	}
 
-	@Override
 	public void sendCancel(int idToCancel) {
 		show("sendCancel: id=" + idToCancel);
 
@@ -58,24 +56,20 @@ public class SampleClient extends Thread implements Client {
 		}
 	}
 
-	@Override
 	public void partialFill(Order order){
 		show("Partial Fill " + order);
 	}
 
-	@Override
 	public void fullyFilled(Order order){
 		show("Order filled" + order);
 		OUT_QUEUE.remove(order.getClientOrderID());
 	}
 
-	@Override
 	public void cancelled(Order order){
 		show("Order cancelled" + order);
 		OUT_QUEUE.remove(order.getClientOrderID());
 	}
 
-	@Override
 	public void messageHandler(){
 		ObjectInputStream is;
 		char MsgType;
@@ -128,8 +122,7 @@ public class SampleClient extends Thread implements Client {
 					//show("");
 				}
 			}
-		} catch (IOException | ClassNotFoundException e){
-			// TODO Auto-generated catch block
+		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}

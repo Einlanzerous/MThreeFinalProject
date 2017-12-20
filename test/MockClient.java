@@ -23,7 +23,6 @@ class MockClient extends Thread{
 				client.messageHandler();
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

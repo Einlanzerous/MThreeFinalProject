@@ -52,7 +52,6 @@ public class SampleRouter extends Thread implements Router{
 
 	public void routeOrder(int id, int sliceId, int size, Instrument i) throws IOException, InterruptedException {
 		int fillSize = RANDOM_NUM_GENERATOR.nextInt(size);
-		//TODO have this similar to the market price of the instrument
 		double fillPrice = 199 * RANDOM_NUM_GENERATOR.nextDouble();
 		Thread.sleep(42);
 		os = new ObjectOutputStream(omConn.getOutputStream());
