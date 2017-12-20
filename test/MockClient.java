@@ -16,7 +16,7 @@ class MockClient extends Thread{
 				//TODO why does this take an arg?
 				//client.sendOrder(null);
 				int id = client.sendOrder();
-				//client.sendCancel(id);
+				client.sendCancel(id);
 				client.messageHandler();
 			} else{
 				client.sendOrder();
