@@ -71,7 +71,8 @@ public class OrderManager {
 				if(0 < client.getInputStream().available()){ //if we have part of a message ready to read, assuming this doesn't fragment messages
 					ObjectInputStream is = new ObjectInputStream(client.getInputStream()); //create an object inputstream, this is a pretty stupid way of doing it, why not create it once rather than every time around the loop
 					String method = (String) is.readObject();
-					System.out.println(Thread.currentThread().getName() + " calling " + method);
+					System.out.println("\u001B[30m"+Thread.currentThread().getName() + " calling: " +
+							method+"\u001B[0m");
 
 					switch(method){ //determine the type of message and process it
 						//call the newOrder message with the clientId and the message (clientMessageId,NewOrderSingle)
@@ -93,7 +94,8 @@ public class OrderManager {
 				if(0 < router.getInputStream().available()){ //if we have part of a message ready to read, assuming this doesn't fragment messages
 					ObjectInputStream is = new ObjectInputStream(router.getInputStream()); //create an object inputstream, this is a pretty stupid way of doing it, why not create it once rather than every time around the loop
 					String method = (String)is.readObject();
-					System.out.println(Thread.currentThread().getName() + " calling " + method);
+					System.out.println("\u001B[30m"+Thread.currentThread().getName() + " calling: " +
+							method+"\u001B[0m");
 
 					switch(method){ //determine the type of message and process it
 						case "bestPrice":
@@ -116,7 +118,8 @@ public class OrderManager {
 			if(0 < this.trader.getInputStream().available()){
 				ObjectInputStream is = new ObjectInputStream(this.trader.getInputStream());
 				String method = (String)is.readObject();
-				System.out.println(Thread.currentThread().getName() + " calling " + method);
+				System.out.println("\u001B[30m"+Thread.currentThread().getName() + " calling: " +
+						method+"\u001B[0m");
 
 				switch(method){
 					case "acceptOrder":
@@ -258,12 +261,13 @@ public class OrderManager {
 
 		if(order.sizeRemaining() == 0){
 			Database.write(order);
-			System.out.println("\u001B[34m" + "Order completed: [Order ID] " + order.getOrderID() + "\u001B[0m");
+			System.out.println("\u001B[34m" + "Order completed: \u001B[30m[Order ID] " + order.getOrderID() + "\u001B[0m");
 			System.out.println("\u001B[30m" + "ORDER SUMMARY: " + "\u001B[34m");
 			for(Order slices : order.slices){
-				System.out.println("\tNumber of fills: " + slices.fills.size());
+				System.out.println("\tNumber of fills: \u001B[30m" + slices.fills.size());
 				for(Fill slots : slices.fills){
-					System.out.format("\t\tOrder of size "+ slots.size + " at $%.2f\n", slots.price);
+					System.out.format("\t\t\u001B[34mOrder of size \u001B[30m"+ slots.size +
+							"\u001B[34m at\u001B[30m $%.2f\n", slots.price);
 					totalPrice += slots.price * slots.size;
 				}
 			}

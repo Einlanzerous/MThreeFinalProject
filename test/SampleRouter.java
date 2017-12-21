@@ -55,7 +55,7 @@ public class SampleRouter extends Thread implements Router{
 		int fillSize = RANDOM_NUM_GENERATOR.nextInt(size);
 		double fillPrice = 199 * RANDOM_NUM_GENERATOR.nextDouble();
 		System.out.format("\u001B[35m*** SampleRouter "+ Thread.currentThread().getName()+
-				" routing "+ fillSize+" with fill price of: $%.2f " + "\u001B[37m***\n",fillPrice);
+				" routing "+ fillSize+" with fill price of: $%.2f " + "***\u001B[37m\n",fillPrice);
 		Thread.sleep(42);
 		os = new ObjectOutputStream(omConn.getOutputStream());
 		os.writeObject("newFill");
@@ -78,7 +78,7 @@ public class SampleRouter extends Thread implements Router{
 		double priceSize = 199 * RANDOM_NUM_GENERATOR.nextDouble();
 		os.writeDouble(priceSize);
 		System.out.format("\u001B[35m" + "*** SampleRouter "+ Thread.currentThread().getName()+
-				" priceAtSize: $%.2f" + "\u001B[37m ***\n",priceSize);
+				" priceAtSize: $%.2f" + " ***\u001B[37m\n",priceSize);
 		os.flush();
 	}
 }
