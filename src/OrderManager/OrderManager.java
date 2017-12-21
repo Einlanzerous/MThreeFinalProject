@@ -70,13 +70,13 @@ public class OrderManager {
 
 				if(0 < client.getInputStream().available()){ //if we have part of a message ready to read, assuming this doesn't fragment messages
 					ObjectInputStream is = new ObjectInputStream(client.getInputStream()); //create an object inputstream, this is a pretty stupid way of doing it, why not create it once rather than every time around the loop
-					String method = (String)is.readObject();
+					String method = (String) is.readObject();
 					System.out.println(Thread.currentThread().getName() + " calling " + method);
 
 					switch(method){ //determine the type of message and process it
 						//call the newOrder message with the clientId and the message (clientMessageId,NewOrderSingle)
 						case "newOrderSingle":
-							newOrder(clientId, is.readInt()-1, (NewOrderSingle)is.readObject());
+							newOrder(clientId, is.readInt(), (NewOrderSingle) is.readObject());
 							break;
 						case "cancel":
 							cancelOrder(is.readInt());
@@ -102,6 +102,7 @@ public class OrderManager {
 							Order slice = orders.get(OrderId).slices.get(SliceId);
 							slice.bestPrices[routerId] = is.readDouble();
 							slice.bestPriceCount += 1;
+
 							if(slice.bestPriceCount == slice.bestPrices.length)
 								reallyRouteOrder(SliceId, slice);
 							break;
@@ -149,7 +150,7 @@ public class OrderManager {
 	}
 
 	private void newOrder(int clientId, int clientOrderId, NewOrderSingle nos) throws IOException{
-		orders.put(id, new Order(clientId, clientOrderId, nos.getInstrument(), nos.getSize()));
+		orders.put(id, new Order(clientId, clientOrderId*7, clientOrderId, nos.getInstrument(), nos.getSize()));
 		//send a message to the client with 39=A; //OrdStatus is Fix 39, 'A' is 'Pending New'
 //		ObjectOutputStream newOrderStream = new ObjectOutputStream(clients[clientId].getOutputStream());
 		ObjectOutputStream newOrderStream = new ObjectOutputStream(clients.get(clientId).getOutputStream());
@@ -158,10 +159,10 @@ public class OrderManager {
 		newOrderStream.writeObject("11=" + clientOrderId + ";35=A;39=A;");
 		newOrderStream.flush();
 		sendOrderToTrader(id, orders.get(id), TradeScreen.api.newOrder);
-		System.out.println("Order ID for OM system: " + orders.get(id).id);
+		System.out.println("Order ID for OM system: " + orders.get(id).getOrderID());
 		//send the new order to the trading screen
 		//don't do anything else with the order, as we are simulating high touch orders and so need to wait for the trader to accept the order
-		id++;
+		this.id++;
 	}
 
 	private void sendOrderToTrader(int id, Order order, Object method) throws IOException{
@@ -176,7 +177,7 @@ public class OrderManager {
 		Order order = orders.get(id);
 
 		if(order.OrdStatus == '4'){
-			System.out.println("\033[31;1mOrder: "+id+" cancelled - declining.\033[0m");
+			System.out.println("\033[31;1mOrder: " + id + " cancelled - declining.\033[0m");
 			return;
 		}
 		else if(order.OrdStatus != 'A'){ //Pending New
@@ -257,7 +258,7 @@ public class OrderManager {
 
 		if(order.sizeRemaining() == 0){
 			Database.write(order);
-			System.out.println("\u001B[34m" + "Order completed: [Order ID] " + order.id + "\u001B[0m");
+			System.out.println("\u001B[34m" + "Order completed: [Order ID] " + order.getOrderID() + "\u001B[0m");
 			System.out.println("\u001B[30m" + "ORDER SUMMARY: " + "\u001B[34m");
 			for(Order slices : order.slices){
 				System.out.println("\tNumber of fills: " + slices.fills.size());

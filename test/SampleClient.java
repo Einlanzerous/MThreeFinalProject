@@ -42,11 +42,11 @@ public class SampleClient extends Thread implements Client {
 			os.writeObject("newOrderSingle");
 			//os.writeObject("35=D;"); //Uncommenting this will ruin the code. lol.
 			os.writeInt(id);
-//			os.writeInt(id);
+			//os.writeInt((id * 11));
 			os.writeObject(nos);
 			os.flush();
 		}
-		return id++;
+		return id;
 	}
 
 	public void sendCancel(int idToCancel) throws IOException {
@@ -58,8 +58,6 @@ public class SampleClient extends Thread implements Client {
 			os.writeInt(idToCancel);
 			os.flush();
 		}
-
-
 	}
 
 	public void partialFill(Order order){
@@ -104,7 +102,7 @@ public class SampleClient extends Thread implements Client {
 								break;
 							case "35":
 								MsgType = tag_value[1].charAt(0);
-								if (MsgType == 'A') newOrderSingleAcknowledgement(OrderId);
+								if (MsgType == 'A') newOrderSingleAcknowledgement(id);
 								break;
 							case "39":
 								OrdStatus = tag_value[1].charAt(0);

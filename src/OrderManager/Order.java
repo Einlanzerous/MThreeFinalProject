@@ -19,9 +19,11 @@ public class Order implements Serializable{
 	int size;
 	double[]bestPrices;
 	int bestPriceCount;
+	int orderID;
 
-	public Order(int clientId, int clientOrderID, Instrument instrument, int size){
+	public Order(int clientId, int orderID, int clientOrderID, Instrument instrument, int size){
 		this.clientOrderID = clientOrderID;
+		this.orderID = orderID;
 		this.size = size;
 		this.clientId = clientId;
 		this.instrument = instrument;
@@ -37,7 +39,7 @@ public class Order implements Serializable{
 		return totalSizeOfSlices;
 	}
 	public int newSlice(int sliceSize){
-		slices.add(new Order(id, clientOrderID, instrument, sliceSize));
+		slices.add(new Order(id, orderID, clientOrderID, instrument, sliceSize));
 		return slices.size() - 1;
 	}
 	public int sizeFilled(){
@@ -120,6 +122,8 @@ public class Order implements Serializable{
 		return clientOrderID;
 	}
 
-
+	public int getOrderID() {
+		return orderID;
+	}
 }
 
