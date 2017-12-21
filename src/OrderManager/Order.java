@@ -40,8 +40,16 @@ public class Order implements Serializable{
 		return totalSizeOfSlices;
 	}
 	public int newSlice(int sliceSize){
-		slices.add(new Order(id, orderID, clientOrderID, instrument, sliceSize));
-		return slices.size() - 1;
+		int sliceID;
+		if(slices.size() == 0){
+			sliceID = 0;
+			slices.add(new Order(clientId, sliceID, clientOrderID, instrument, sliceSize));
+			return sliceID;
+		} else {
+			sliceID = slices.size();
+			slices.add(new Order(clientId, sliceID, clientOrderID, instrument, sliceSize));
+			return sliceID;
+		}
 	}
 	public int sizeFilled(){
 		int filledSoFar = 0;
