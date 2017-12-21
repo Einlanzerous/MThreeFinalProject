@@ -7,7 +7,7 @@ import OrderManager.OrderManager;
 
 public class Main{
 	public static void main(String[] args) {
-		System.out.println("TEST: this program tests ordermanager");
+		System.out.println("\u001B[31mTEST: This progrem tests OrderManager.\u001B[0m");
 
 		//start sample clients
 		(new MockClient("Client 1",2000)).start();
