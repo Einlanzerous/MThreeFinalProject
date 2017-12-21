@@ -29,6 +29,7 @@ public class Order implements Serializable{
 		this.instrument = instrument;
 		this.fills = new ArrayList<>();
 		this.slices = new ArrayList<>();
+		this.id = clientId;
 	}
 
 	public int sliceSizes(){ // change c.size to c.getSize: make size private, add size getter
@@ -62,7 +63,7 @@ public class Order implements Serializable{
 		float sum = 0;
 		// get the slice by its id
 		for(Order slice: slices) {
-			if(slice.id == accountNumberOfSlice) {
+			if(slice.getOrderID() == accountNumberOfSlice) {
 				// sum all the fills of that slice
 				for(Fill fill : slice.fills){
 					sum+=fill.price; // change to fill.getPrice()
