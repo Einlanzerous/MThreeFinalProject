@@ -25,7 +25,7 @@ public class SampleClient extends Thread implements Client {
 		omConn = new ServerSocket(port).accept();
 		this.setName(name);
 
-		System.out.println("OM connected to client port " + port);
+		System.out.println("\u001B[37mOM connected to client port " + port);
 	}
 
 	public int sendOrder()throws IOException{
@@ -134,7 +134,7 @@ public class SampleClient extends Thread implements Client {
 	}
 
 	public static void show(String out) {
-		System.out.println("\033[31;1m"+Thread.currentThread().getName() + ": " + out+"\033[0m");
+		System.out.println("\u001B[33m"+Thread.currentThread().getName() + ": " + out+"\u001B[0m");
 	}
 
 	void newOrderSingleAcknowledgement(int OrderId){

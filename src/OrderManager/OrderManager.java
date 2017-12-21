@@ -71,7 +71,8 @@ public class OrderManager {
 				if(0 < client.getInputStream().available()){ //if we have part of a message ready to read, assuming this doesn't fragment messages
 					ObjectInputStream is = new ObjectInputStream(client.getInputStream()); //create an object inputstream, this is a pretty stupid way of doing it, why not create it once rather than every time around the loop
 					String method = (String)is.readObject();
-					System.out.println(Thread.currentThread().getName() + " calling " + method);
+					System.out.println("\u001B[30m"+Thread.currentThread().getName() +
+							" calling: " + method+"\u001B[0m");
 
 					switch(method){ //determine the type of message and process it
 						//call the newOrder message with the clientId and the message (clientMessageId,NewOrderSingle)
@@ -93,7 +94,8 @@ public class OrderManager {
 				if(0 < router.getInputStream().available()){ //if we have part of a message ready to read, assuming this doesn't fragment messages
 					ObjectInputStream is = new ObjectInputStream(router.getInputStream()); //create an object inputstream, this is a pretty stupid way of doing it, why not create it once rather than every time around the loop
 					String method = (String)is.readObject();
-					System.out.println(Thread.currentThread().getName() + " calling " + method);
+					System.out.println("\u001B[30"+Thread.currentThread().getName() + " calling: " +
+							method+"\u001B[0m");
 
 					switch(method){ //determine the type of message and process it
 						case "bestPrice":
@@ -115,7 +117,8 @@ public class OrderManager {
 			if(0 < this.trader.getInputStream().available()){
 				ObjectInputStream is = new ObjectInputStream(this.trader.getInputStream());
 				String method = (String)is.readObject();
-				System.out.println(Thread.currentThread().getName() + " calling " + method);
+				System.out.println("\u001B[30m"+Thread.currentThread().getName() + " calling: " +
+						method+"\u001B[0m");
 
 				switch(method){
 					case "acceptOrder":
@@ -176,11 +179,11 @@ public class OrderManager {
 		Order order = orders.get(id);
 
 		if(order.OrdStatus == '4'){
-			System.out.println("\033[31;1mOrder: "+id+" cancelled - declining.\033[0m");
+			System.out.println("\u001B[30mOrder: "+id+" cancelled - declining.\u001B[0m");
 			return;
 		}
 		else if(order.OrdStatus != 'A'){ //Pending New
-			System.out.println("error accepting order that has already been accepted");
+			System.out.println("Error accepting order that has already been accepted.");
 			return;
 		}
 
@@ -200,7 +203,7 @@ public class OrderManager {
 		//slice the order. We have to check this is a valid size.
 		//Order has a list of slices, and a list of fills, each slice is a childorder and each fill is associated with either a child order or the original order
 		if(sliceSize > order.sizeRemaining() - order.sliceSizes()){
-			System.out.println("error sliceSize is bigger than remaining size to be filled on the order");
+			System.out.println("Error: sliceSize is bigger than remaining size to be filled on the order.");
 			return;
 		}
 		int sliceId = order.newSlice(sliceSize);
@@ -238,7 +241,8 @@ public class OrderManager {
 			ObjectOutputStream newOrderStream = new ObjectOutputStream(clients.get(cancelOrder.clientId).getOutputStream());
 			newOrderStream.writeObject("11=" + cancelOrder.clientId + ";39=4");
 			newOrderStream.flush();
-			System.out.println("\033[31;1m"+Thread.currentThread().getName()+ " successfully cancelled order: " +id+"\033[0m");
+			System.out.println("\u001B[30m"+
+					Thread.currentThread().getName()+ " successfully cancelled [Order: " +id+"]\u001B[0m");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -249,7 +253,7 @@ public class OrderManager {
 		double totalPrice = 0;
 
 		if(order.OrdStatus == '4'){
-			System.err.println("Refusing fill; order was cancelled");
+			System.err.println("\u001B[37mRefusing fill; order was cancelled.\u001B[0m");
 			return;
 		}
 
@@ -257,17 +261,16 @@ public class OrderManager {
 
 		if(order.sizeRemaining() == 0){
 			Database.write(order);
-			System.out.println("\u001B[34m" + "Order completed: [Order ID] " + order.id + "\u001B[0m");
+			System.out.println("\u001B[34m" + "Order completed: \u001B[30m[Order ID] " + order.id + "\u001B[0m");
 			System.out.println("\u001B[30m" + "ORDER SUMMARY: " + "\u001B[34m");
 			for(Order slices : order.slices){
-				System.out.println("\tNumber of fills: " + slices.fills.size());
+				System.out.println("\tNumber of fills: \u001B[30m" + slices.fills.size()+"\u001B[0m");
 				for(Fill slots : slices.fills){
-					System.out.format("\t\tOrder of size "+ slots.size + " at $%.2f\n", slots.price);
+					System.out.format("\t\t\u001B[34mOrder of size \u001B[30m"+ slots.size + "\u001B[34m at \u001B[30m$%.2f\n\u001B[0m", slots.price);
 					totalPrice += slots.price * slots.size;
 				}
 			}
-			System.out.format("\tORDER TOTAL: \u001B[30m $%.2f", totalPrice);
-			System.out.println("\u001B[0m");
+			System.out.format("\t\u001B[30mORDER TOTAL:  $%.2f\n\u001B[0m", totalPrice);
 		} else {
 			sendOrderToTrader(id, order, TradeScreen.api.fill);
 		}
