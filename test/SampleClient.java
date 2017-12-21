@@ -33,7 +33,7 @@ public class SampleClient extends Thread implements Client {
 		int instid = RANDOM_NUM_GENERATOR.nextInt(3);
 		Instrument instrument = INSTRUMENTS[instid];
 		NewOrderSingle nos = new NewOrderSingle(size, instid, instrument);
-		//id = id + RANDOM_NUM_GENERATOR.nextInt(10000) + 2;
+		id = id + RANDOM_NUM_GENERATOR.nextInt(10000);
 		show("sendOrder: client id=" + id + " size=" + size + " instrument=" + instrument.toString());
 		OUT_QUEUE.put(id, nos);
 
@@ -42,6 +42,7 @@ public class SampleClient extends Thread implements Client {
 			os.writeObject("newOrderSingle");
 			//os.writeObject("35=D;"); //Uncommenting this will ruin the code. lol.
 			os.writeInt(id);
+//			os.writeInt(id);
 			os.writeObject(nos);
 			os.flush();
 		}

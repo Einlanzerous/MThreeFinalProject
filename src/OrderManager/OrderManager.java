@@ -18,8 +18,10 @@ public class OrderManager {
 	//currently recording the number of new order messages we get. TODO why? use it for more?
 	private int id = 0; //debugger will do this line as it gives state to the object
 	private Socket[] orderRouters; //debugger will skip these lines as they disappear at compile time into 'the object'/stack
-	private Socket[] clients;
+//	private Socket[] clients;
+	private HashMap<Integer, Socket> clients;
 	private Socket trader;
+
 
 	//@param args the command line arguments
 	public OrderManager(InetSocketAddress[] orderRouters, InetSocketAddress[] clients,
@@ -40,11 +42,13 @@ public class OrderManager {
 		}
 
 		//repeat for the client connections
-		this.clients = new Socket[clients.length];
+//		this.clients = new Socket[clients.length];
+		this.clients = new HashMap<Integer, Socket>();
 		i = 0;
 
 		for (InetSocketAddress location : clients) {
-			this.clients[i] = connect(location);
+//			this.clients[i] = connect(location);
+			this.clients.put(i, connect(location));
 			i++;
 		}
 		processDay();
@@ -58,8 +62,10 @@ public class OrderManager {
 		while(true){
 			//TODO this is pretty cpu intensive, use a more modern polling/interrupt/select approach
 			//we want to use the arrayindex as the clientId, so use traditional for loop instead of foreach
-			for(clientId = 0; clientId < this.clients.length; clientId++){ //check if we have data on any of the sockets
-				client = this.clients[clientId];
+//			for(clientId = 0; clientId < this.clients.length; clientId++){ //check if we have data on any of the sockets
+//				client = this.clients[clientId];
+			for(clientId = 0; clientId < this.clients.size(); clientId++){ //check if we have data on any of the sockets
+				client = this.clients.get(clientId);
 
 
 				if(0 < client.getInputStream().available()){ //if we have part of a message ready to read, assuming this doesn't fragment messages
@@ -145,7 +151,8 @@ public class OrderManager {
 	private void newOrder(int clientId, int clientOrderId, NewOrderSingle nos) throws IOException{
 		orders.put(id, new Order(clientId, clientOrderId, nos.getInstrument(), nos.getSize()));
 		//send a message to the client with 39=A; //OrdStatus is Fix 39, 'A' is 'Pending New'
-		ObjectOutputStream newOrderStream = new ObjectOutputStream(clients[clientId].getOutputStream());
+//		ObjectOutputStream newOrderStream = new ObjectOutputStream(clients[clientId].getOutputStream());
+		ObjectOutputStream newOrderStream = new ObjectOutputStream(clients.get(clientId).getOutputStream());
 		//newOrderSingle acknowledgement
 		//ClOrdId is 11=
 		newOrderStream.writeObject("11=" + clientOrderId + ";35=A;39=A;");
@@ -177,7 +184,8 @@ public class OrderManager {
 		}
 
 		order.OrdStatus = '0'; //New
-		ObjectOutputStream os = new ObjectOutputStream(clients[order.clientId].getOutputStream());
+//		ObjectOutputStream os = new ObjectOutputStream(clients[order.clientId].getOutputStream());
+		ObjectOutputStream os = new ObjectOutputStream(clients.get(order.clientId).getOutputStream());
 		//newOrderSingle acknowledgement
 		//ClOrdId is 11=
 		os.writeObject("11=" + order.getClientOrderID() + ";39=0");
@@ -225,7 +233,8 @@ public class OrderManager {
 		cancelOrder.OrdStatus = '4'; //cancel marker
 
 		try {
-			ObjectOutputStream newOrderStream = new ObjectOutputStream(clients[cancelOrder.clientId].getOutputStream());
+//			ObjectOutputStream newOrderStream = new ObjectOutputStream(clients[cancelOrder.clientId].getOutputStream());
+			ObjectOutputStream newOrderStream = new ObjectOutputStream(clients.get(cancelOrder.clientId).getOutputStream());
 			newOrderStream.writeObject("11=" + cancelOrder.clientId + ";39=4");
 			newOrderStream.flush();
 			System.out.println("\033[31;1m"+Thread.currentThread().getName()+ " successfully cancelled order: " +id+"\033[0m");
