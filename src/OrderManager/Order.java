@@ -25,12 +25,12 @@ public class Order implements Serializable{
 		this.size = size;
 		this.clientId = clientId;
 		this.instrument = instrument;
-		this.fills = new ArrayList<Fill>();
-		this.slices = new ArrayList<Order>();
+		this.fills = new ArrayList<>();
+		this.slices = new ArrayList<>();
 	}
 
 	public int sliceSizes(){ // change c.size to c.getSize: make size private, add size getter
-		int totalSizeOfSlices=0;
+		int totalSizeOfSlices = 0;
 
 		for(Order c:slices)totalSizeOfSlices += c.size;
 
@@ -38,7 +38,7 @@ public class Order implements Serializable{
 	}
 	public int newSlice(int sliceSize){
 		slices.add(new Order(id, clientOrderID, instrument, sliceSize));
-		return slices.size()-1;
+		return slices.size() - 1;
 	}
 	public int sizeFilled(){
 		int filledSoFar = 0;
@@ -70,8 +70,8 @@ public class Order implements Serializable{
 
 		return sum/fills.size();
 	}
-	void createFill(int size,double price){
-		fills.add(new Fill(size,price));
+	void createFill(int size, double price){
+		fills.add(new Fill(size, price));
 
 		if(sizeRemaining() == 0){
 			OrdStatus = '2';

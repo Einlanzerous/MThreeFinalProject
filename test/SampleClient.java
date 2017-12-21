@@ -90,7 +90,7 @@ public class SampleClient extends Thread implements Client {
 					is = new ObjectInputStream(omConn.getInputStream());
 					String fix = (String)is.readObject();
 
-					System.out.println(Thread.currentThread().getName() + " received fix message: " + fix);
+					System.out.println("\u001B[33m" + Thread.currentThread().getName() + " received fix message: " + fix + "\u001B[0m");
 
 					String[] fixTags = fix.split(";");
 					int OrderId =- 1;
@@ -100,7 +100,7 @@ public class SampleClient extends Thread implements Client {
 						switch (tag_value[0]) {
 							case "11":
 								OrderId = Integer.parseInt(tag_value[1]);
-								System.out.println("Case 11 apparently: " + OrderId);
+								//System.out.println("Case 11 apparently: " + OrderId);
 								break;
 							case "35":
 								MsgType = tag_value[1].charAt(0);
@@ -108,7 +108,7 @@ public class SampleClient extends Thread implements Client {
 								break;
 							case "39":
 								OrdStatus = tag_value[1].charAt(0);
-								System.out.println("Order status is apparently: " + OrdStatus);
+								//System.out.println("Order status is apparently: " + OrdStatus);
 								break;
 						}
 					}
@@ -138,7 +138,7 @@ public class SampleClient extends Thread implements Client {
 	}
 
 	void newOrderSingleAcknowledgement(int OrderId){
-		System.out.println(Thread.currentThread().getName() + " called newOrderSingleAcknowledgement for Order ID:" + OrderId);
+		System.out.println("\u001B[33m" + Thread.currentThread().getName() + " called newOrderSingleAcknowledgement for Order ID: " + OrderId + "\u001B[0m");
 		//do nothing, as not recording so much state in the NOS class at present
 	}
 /*listen for connections

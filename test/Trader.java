@@ -30,7 +30,7 @@ public class Trader extends Thread implements TradeScreen{
 					ObjectInputStream is = new ObjectInputStream(omConn.getInputStream());
 					api method = (api) is.readObject();
 
-					System.out.println(Thread.currentThread().getName() + " calling: " + method);
+					System.out.println("\u001B[32m" + Thread.currentThread().getName() + " calling: " + method + "\u001B[0m");
 
 					switch(method){
 						case newOrder:
@@ -40,6 +40,7 @@ public class Trader extends Thread implements TradeScreen{
 							price(is.readInt(), (Order) is.readObject());
 							break;
 						case cross:
+							System.err.println("WAS GIVEN A CROSS- NOT IMPLEMENTED");
 							is.readInt();
 							is.readObject();
 							break; //TODO
@@ -89,7 +90,7 @@ public class Trader extends Thread implements TradeScreen{
 	}
 
 	public void fill(int id, Order order) throws IOException {
-		System.out.println(Thread.currentThread().getName() + " is filling " + order.sizeRemaining());
+		System.out.println("\u001B[32m" + Thread.currentThread().getName() + " is filling " + order.sizeRemaining() + "\u001B[0m");
 		os = new ObjectOutputStream(omConn.getOutputStream());
 		os.writeObject("newFill");
 		os.writeInt(id);

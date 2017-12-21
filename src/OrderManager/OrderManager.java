@@ -158,6 +158,7 @@ public class OrderManager {
 		newOrderStream.writeObject("11=" + clientOrderId + ";35=A;39=A;");
 		newOrderStream.flush();
 		sendOrderToTrader(id, orders.get(id), TradeScreen.api.newOrder);
+		System.out.println("Order ID for OM system: " + orders.get(id).id);
 		//send the new order to the trading screen
 		//don't do anything else with the order, as we are simulating high touch orders and so need to wait for the trader to accept the order
 		id++;
@@ -245,6 +246,7 @@ public class OrderManager {
 
 	private void newFill(int id, int sliceId, int size, double price) throws IOException{
 		Order order = orders.get(id);
+		double totalPrice = 0;
 
 		if(order.OrdStatus == '4'){
 			System.err.println("Refusing fill; order was cancelled");
@@ -255,14 +257,17 @@ public class OrderManager {
 
 		if(order.sizeRemaining() == 0){
 			Database.write(order);
-			System.out.println("\033[31;1mOrder completed: " + id+"\033[0m");
-			System.out.println("ORDER SUMMARY: ");
+			System.out.println("\u001B[34m" + "Order completed: [Order ID] " + order.id + "\u001B[0m");
+			System.out.println("\u001B[30m" + "ORDER SUMMARY: " + "\u001B[34m");
 			for(Order slices : order.slices){
-				System.out.println("Number of fills: " + slices.fills.size());
+				System.out.println("\tNumber of fills: " + slices.fills.size());
 				for(Fill slots : slices.fills){
-					System.out.format("Order of size "+ slots.size + " at $%.2f\n",slots.price);
+					System.out.format("\t\tOrder of size "+ slots.size + " at $%.2f\n", slots.price);
+					totalPrice += slots.price * slots.size;
 				}
 			}
+			System.out.format("\tORDER TOTAL: \u001B[30m $%.2f", totalPrice);
+			System.out.println("\u001B[0m");
 		} else {
 			sendOrderToTrader(id, order, TradeScreen.api.fill);
 		}

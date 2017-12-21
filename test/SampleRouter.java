@@ -32,7 +32,7 @@ public class SampleRouter extends Thread implements Router{
 				if(omConn.getInputStream().available() > 0){
 					is=new ObjectInputStream(omConn.getInputStream());
 					Router.api methodName = (Router.api)is.readObject();
-					System.out.println("Order Router received method call for:" + methodName);
+					System.out.println("\u001B[35m" + "Order Router received method call for:" + methodName + "\u001B[0m");
 
 					switch(methodName){
 						case routeOrder:
@@ -54,7 +54,7 @@ public class SampleRouter extends Thread implements Router{
 	public void routeOrder(int id, int sliceId, int size, Instrument i) throws IOException, InterruptedException {
 		int fillSize = RANDOM_NUM_GENERATOR.nextInt(size);
 		double fillPrice = 199 * RANDOM_NUM_GENERATOR.nextDouble();
-		System.out.println("The price of routOrder in SampleRouter: " + fillPrice);
+		System.out.println("\u001B[35m" + "The price of routOrder in SampleRouter: " + fillPrice + "\u001B[0m");
 		Thread.sleep(42);
 		os = new ObjectOutputStream(omConn.getOutputStream());
 		os.writeObject("newFill");
@@ -76,7 +76,7 @@ public class SampleRouter extends Thread implements Router{
 		os.writeInt(sliceId);
 		double priceSize = 199 * RANDOM_NUM_GENERATOR.nextDouble();
 		os.writeDouble(priceSize);
-		System.out.println("*************SampleRouter priceAtSize calling: " + priceSize);
+		System.out.println("\u001B[35m" + "*************SampleRouter priceAtSize calling: " + priceSize + "\u001B[0m");
 		os.flush();
 	}
 }
