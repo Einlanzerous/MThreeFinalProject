@@ -90,7 +90,8 @@ public class Trader extends Thread implements TradeScreen{
 	}
 
 	public void fill(int id, Order order) throws IOException {
-		System.out.println("\u001B[32m" + Thread.currentThread().getName() + " is filling " + order.sizeRemaining() + "\u001B[0m");
+		System.out.println("\u001B[32m" + Thread.currentThread().getName() +
+				" is filling " + order.sizeRemaining() + "\u001B[0m");
 		os = new ObjectOutputStream(omConn.getOutputStream());
 		os.writeObject("newFill");
 		os.writeInt(id);
