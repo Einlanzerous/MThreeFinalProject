@@ -258,7 +258,7 @@ public class OrderManager {
 
 		if(order.sizeRemaining() == 0){
 			Database.write(order);
-			System.out.println("\u001B[34m" + "Order completed: [Order ID] " + order.getOrderID() + "\u001B[0m");
+			System.out.println("\u001B[34m" + "Order completed: [Order ID] " + order.id + "\u001B[0m");
 			System.out.println("\u001B[30m" + "ORDER SUMMARY: " + "\u001B[34m");
 			for(Order slices : order.slices){
 				System.out.println("\tNumber of fills: " + slices.fills.size());
